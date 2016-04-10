@@ -3,6 +3,9 @@
 //	by Chris Lee - cla235
 */
 
+#include <iostream>
+#include <stdexcept>
+
 #include "Box.h"
 #include "..\test.h"
 #include "..\_util.h"

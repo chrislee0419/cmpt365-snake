@@ -4,6 +4,13 @@
 #define STATE_GAMEOVER 3
 #define STATE_PLAY 10
 
+// AudioManager macros
+#define SOUND_MOVE 1
+#define SOUND_EAT 2
+#define SOUND_LOSE 3
+#define MUSIC_PLAY 10
+#define MUSIC_PAUSE 11
+
 // Movement macros
 #define MOVE_LEFT 0
 #define MOVE_RIGHT 1

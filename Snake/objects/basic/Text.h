@@ -5,8 +5,6 @@
 
 #pragma once
 
-#include <iostream>
-#include <stdexcept>
 #include <map>
 
 #include "..\..\depend\glew\glew.h"
