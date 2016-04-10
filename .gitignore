@@ -8,8 +8,8 @@
 
 # Build results
 
-[Dd]ebug/CMPT365_Pacman.*
-CMPT365_Pacman/[Dd]ebug/
+[Dd]ebug/Snake.*
+Snake/[Dd]ebug/
 [Rr]elease/
 x64/
 build/
@@ -30,7 +30,7 @@ build/
 *.obj
 *.pch
 [Dd]ebug/*.pdb
-CMPT365_Pacman/[Dd]ebug/*.pdb
+Snake/[Dd]ebug/*.pdb
 *.pgc
 *.pgd
 *.rsp

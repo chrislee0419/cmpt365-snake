@@ -7,6 +7,7 @@
 #include "..\test.h"
 #include "..\_util.h"
 
+
 using namespace std;
 
 // Globals
@@ -17,12 +18,12 @@ map<char, Character> Text::_ubuntu;
 // Constructors
 Text::Text()
 {
-	_Init(0, 12, "Text", 0, 0, WHITE);
+	_Init(ROBOTO, 12, "Text", 0, 0, WHITE);
 }
 
 Text::Text(string text, int xpos, int ypos)
 {
-	_Init(0, 2, text, xpos, ypos, WHITE);
+	_Init(ROBOTO, 2, text, xpos, ypos, WHITE);
 	if (!_Assert())
 		throw invalid_argument("Text [WARNING]: constructor recieved an invalid input.");
 }
@@ -36,7 +37,7 @@ Text::Text(int font, float size, string text, int xpos, int ypos)
 
 Text::Text(string text, int xpos, int ypos, glm::vec4 colour)
 {
-	_Init(0, 12, text, xpos, ypos, colour);
+	_Init(ROBOTO, 12, text, xpos, ypos, colour);
 	if (!_Assert())
 		throw invalid_argument("Text [WARNING]: constructor recieved an invalid input.");
 }
@@ -64,13 +65,76 @@ Text::~Text()
 		glDeleteVertexArrays(1, &_vao);
 }
 
+// Getter methods
+float Text::GetHeight()
+{
+	float max_height = -1.0;
+	int iter = 0;
+	char c = _text[iter];
+
+	while (c != NULL)
+	{
+		Character ch;
+		if (_font == ROBOTO)
+			ch = _roboto[c];
+		else if (_font == UBUNTU)
+			ch = _ubuntu[c];
+		else
+		{
+			max_height = -1.0;
+			break;
+		}
+
+		float h;
+		if (max_height < (h = (ch.Size.y * _size)))
+			max_height = h;
+
+		c = _text[++iter];
+	}
+
+	if (max_height < 0)
+		printf("Text [WARNING]: error occurred in GetHeight().\n");
+
+	return max_height;
+}
+
+float Text::GetWidth()
+{
+	float width = 0.0f;
+	int iter = 0;
+	char c = _text[iter];
+
+	while (c != NULL)
+	{
+		Character ch;
+		if (_font == ROBOTO)
+			ch = _roboto[c];
+		else if (_font == UBUNTU)
+			ch = _ubuntu[c];
+		else
+		{
+			width = -1.0;
+			break;
+		}
+
+		width += ch.Size.x * _size;
+
+		c = _text[++iter];
+	}
+
+	if (width < 0)
+		printf("Text [WARNING]: error occurred in GetWidth().\n");
+
+	return width;
+}
+
 // Setter methods
 void Text::SetFont(int font)
 {
-	if (font == 0 || font == 1)
+	if (font == ROBOTO || font == UBUNTU)
 		_font = font;
 	else
-		printf("Text [WARNING]: SetFont recieved an invalid font");
+		printf("Text [WARNING]: SetFont recieved an invalid font.\n");
 	
 }
 
@@ -79,7 +143,7 @@ void Text::SetSize(float size)
 	if (size > 0)
 		_size = size;
 	else
-		printf("Text [WARNING]: SetSize recieved an invalid font");
+		printf("Text [WARNING]: SetSize recieved an invalid font.\n");
 }
 
 void Text::SetText(string text)
@@ -137,9 +201,9 @@ void Text::Draw(int x_translate, int y_translate)
 	while (c != NULL)
 	{
 		Character ch;
-		if (_font == 0)
+		if (_font == ROBOTO)
 			ch = _roboto[c];
-		else if (_font == 1)
+		else if (_font == UBUNTU)
 			ch = _ubuntu[c];
 		else
 			return;
@@ -187,7 +251,7 @@ void Text::_Init(int font, float size, string text, int xpos, int ypos, glm::vec
 
 bool Text::_Assert()
 {
-	if ( !(_font == 0 || _font == 1) )
+	if ( !(_font == ROBOTO || _font == UBUNTU) )
 	{
 		printf("Text [WARNING]: _Assert found invalid _font (%d).\n", _font);
 		return false;
@@ -243,7 +307,7 @@ void Text::PrepareFT()
 		// Loading Roboto font
 		if (FT_Load_Char(roboto_face, c, FT_LOAD_RENDER))
 		{
-			printf("Text [WARNING]: FreeType could not load char \"%c\" for font Roboto, skipping\n", c);
+			printf("Text [WARNING]: FreeType could not load char \"%c\" for font Roboto, skipping.\n", c);
 			continue;
 		}
 		GLuint roboto_texture;
@@ -267,7 +331,7 @@ void Text::PrepareFT()
 		// Loading Ubuntu font
 		if (FT_Load_Char(ubuntu_face, c, FT_LOAD_RENDER))
 		{
-			printf("Text [WARNING]: FreeType could not load char \"%c\" for font Ubuntu, skipping\n", c);
+			printf("Text [WARNING]: FreeType could not load char \"%c\" for font Ubuntu, skipping.\n", c);
 			continue;
 		}
 		GLuint ubuntu_texture;
@@ -297,10 +361,89 @@ void Text::PrepareFT()
 // Testing methods
 void Test::_CreateTextTest()
 {
-	text_objects = (Text*)malloc(sizeof(Text) * 3);
-	text_objects[0] = Text("This is a test.", 25, 25);
-	text_objects[1] = Text(0, 2, "Second Test.", 50, 50);
-	text_objects[2] = Text(0, 5, "Third Test.", 100, 100, RED);
+	text_objects = (Text*)malloc(sizeof(Text) * 18);
+
+	//
+	// testing roboto font
+	text_objects[0] = Text(ROBOTO, 5.0f, "A quick brown fox jumped over the lazy dog. (5.0)", 0, 0, RED);
+	float height = text_objects[0].GetHeight();
+	text_objects[0].SetYPosition(800 - (int)height);
+
+	text_objects[1] = Text(ROBOTO, 3.0f, "A quick brown fox jumped over the lazy dog. (3.0)", 0, 0, GREEN);
+	height += text_objects[1].GetHeight();
+	text_objects[1].SetYPosition(800 - (int)height);
+
+	text_objects[2] = Text(ROBOTO, 2.0f, "A quick brown fox jumped over the lazy dog. (2.0)", 0, 0, BLUE);
+	height += text_objects[2].GetHeight();
+	text_objects[2].SetYPosition(800 - (int)height);
+
+	text_objects[3] = Text(ROBOTO, 1.0f, "A quick brown fox jumped over the lazy dog. (1.0)", 0, 0, YELLOW);
+	height += text_objects[3].GetHeight();
+	text_objects[3].SetYPosition(800 - (int)height);
+
+	text_objects[4] = Text(ROBOTO, 0.9f, "A quick brown fox jumped over the lazy dog. (0.9)", 0, 0, MAGENTA);
+	height += text_objects[4].GetHeight();
+	text_objects[4].SetYPosition(800 - (int)height);
+
+	text_objects[5] = Text(ROBOTO, 0.8f, "A quick brown fox jumped over the lazy dog. (0.8)", 0, 0, CYAN);
+	height += text_objects[5].GetHeight();
+	text_objects[5].SetYPosition(800 - (int)height);
+
+	text_objects[6] = Text(ROBOTO, 0.7f, "A quick brown fox jumped over the lazy dog. (0.7)", 0, 0, GOLD);
+	height += text_objects[6].GetHeight();
+	text_objects[6].SetYPosition(800 - (int)height);
+
+	text_objects[7] = Text(ROBOTO, 0.6f, "A quick brown fox jumped over the lazy dog. (0.6)", 0, 0, PINK);
+	height += text_objects[7].GetHeight();
+	text_objects[7].SetYPosition(800 - (int)height);
+
+	text_objects[8] = Text(ROBOTO, 0.5f, "A quick brown fox jumped over the lazy dog. (0.5)", 0, 0, LIGHTBLUE);
+	height += text_objects[8].GetHeight();
+	text_objects[8].SetYPosition(800 - (int)height);
+
+	//
+	// testing ubuntu font
+	text_objects[9] = Text(UBUNTU, 5.0f, "A quick brown fox jumped over the lazy dog. (5.0)", 0, 0, RED);
+	height = text_objects[9].GetHeight();
+	text_objects[9].SetYPosition(400 - (int)height);
+
+	text_objects[10] = Text(UBUNTU, 3.0f, "A quick brown fox jumped over the lazy dog. (3.0)", 0, 0, GREEN);
+	height += text_objects[10].GetHeight();
+	text_objects[10].SetYPosition(400 - (int)height);
+
+	text_objects[11] = Text(UBUNTU, 2.0f, "A quick brown fox jumped over the lazy dog. (2.0)", 0, 0, BLUE);
+	height += text_objects[11].GetHeight();
+	text_objects[11].SetYPosition(400 - (int)height);
+
+	text_objects[12] = Text(UBUNTU, 1.0f, "A quick brown fox jumped over the lazy dog. (1.0)", 0, 0, YELLOW);
+	height += text_objects[12].GetHeight();
+	text_objects[12].SetYPosition(400 - (int)height);
+
+	text_objects[13] = Text(UBUNTU, 0.9f, "A quick brown fox jumped over the lazy dog. (0.9)", 0, 0, MAGENTA);
+	height += text_objects[13].GetHeight();
+	text_objects[13].SetYPosition(400 - (int)height);
+
+	text_objects[14] = Text(UBUNTU, 0.8f, "A quick brown fox jumped over the lazy dog. (0.8)", 0, 0, CYAN);
+	height += text_objects[14].GetHeight();
+	text_objects[14].SetYPosition(400 - (int)height);
+
+	text_objects[15] = Text(UBUNTU, 0.7f, "A quick brown fox jumped over the lazy dog. (0.7)", 0, 0, GOLD);
+	height += text_objects[15].GetHeight();
+	text_objects[15].SetYPosition(400 - (int)height);
+
+	text_objects[16] = Text(UBUNTU, 0.6f, "A quick brown fox jumped over the lazy dog. (0.6)", 0, 0, PINK);
+	height += text_objects[16].GetHeight();
+	text_objects[16].SetYPosition(400 - (int)height);
+
+	text_objects[17] = Text(UBUNTU, 0.5f, "A quick brown fox jumped over the lazy dog. (0.5)", 0, 0, LIGHTBLUE);
+	height += text_objects[17].GetHeight();
+	text_objects[17].SetYPosition(400 - (int)height);
+
+	//text_objects[0] = Text(0, 1.0f, "Test 1. (Size = 1.0)", 25, 25, WHITE);
+	//text_objects[1] = Text(0, 2.0f, "Test 2. (Size = 2.0)", 50, 50, YELLOW);
+	//text_objects[2] = Text(0, 5.0f, "Test 3. (Size = 5.0)", 100, 100, RED);
+	//text_objects[3] = Text(0, 0.5f, "Test 4. (Size = 0.5)", 100, 300, GREEN);
+	//text_objects[4] = Text(0, 0.8f, "Test 5. (Size = 0.8)", 100, 200, CYAN);
 
 	_text_test = true;
 }
@@ -310,7 +453,7 @@ void Test::_DisplayTextTest()
 	if (!_text_test)
 		return;
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 18; i++)
 		text_objects[i].Draw(0, 0);
 
 }

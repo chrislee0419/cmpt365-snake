@@ -18,6 +18,9 @@
 #include "..\..\depend\glm\vec2.hpp"
 #include "..\..\depend\glm\vec4.hpp"
 
+#define ROBOTO 0
+#define UBUNTU 1
+
 struct Character
 {
 	GLuint TextureID;
@@ -54,6 +57,9 @@ public:
 	Text(int font, float size, std::string text, int xpos, int ypos, glm::vec4 colour);
 	Text(const Text &copytext);
 	~Text();
+
+	float GetHeight();
+	float GetWidth();
 
 	void SetFont(int font);
 	void SetSize(float size);
