@@ -24,9 +24,9 @@ Menu::Menu()
 	_snakebox = (Box*)malloc(sizeof(Box)* 72);
 
 	// initialization
-	*_background = Box(800, 200, 0, 600, 10, DARKGREY, BLACK);
-	*_scorebox = Box(0, 95, 300, 105, 10, DARKGREY, BLACK);
-	*_highscorebox = Box(0, 0, 300, 105, 10, DARKGREY, BLACK);
+	*_background = Box(800, 200, 0, 0, 10, DARKGREY, BLACK);
+	*_scorebox = Box(300, 105, 0, 95, 10, DARKGREY, BLACK);
+	*_highscorebox = Box(300, 105, 0, 0, 10, DARKGREY, BLACK);
 	*_scoretext = Text(0, 1.0f, "Score:", 20, 175, RED);
 	*_scorenumber = Text(0, 1.0f, "000000", 150, 115, WHITE);
 	*_highscoretext = Text(0, 1.0f, "High Score:", 20, 75, RED);
@@ -137,5 +137,6 @@ void Menu::Draw()
 	_highscorebox->Draw(0, 600);
 	_highscoretext->Draw(0, 600);
 	_highscorenumber->Draw(0, 600);
-	_snakebox->Draw(0, 600);
+	for (int i = 0; i < 72; i++)
+		_snakebox[i].Draw(0, 600);
 }
