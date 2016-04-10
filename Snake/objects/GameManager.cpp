@@ -4,13 +4,14 @@
 */
 
 #include "GameManager.h"
+#include "_macro.h"
 
 // Constructor
 GameManager::GameManager()
 {
 	_top_menu = new Menu();
 	_game = new Game();
-	_game_state = INSTRUCTIONS;
+	_game_state = STATE_INSTRUCT;
 }
 
 // Destructor

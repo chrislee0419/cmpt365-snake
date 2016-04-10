@@ -8,11 +8,6 @@
 #include "game\Menu.h"
 #include "game\Game.h"
 
-#define INSTRUCTIONS 1
-#define PAUSED 2
-#define GAMEOVER 3
-#define PLAY 10
-
 class GameManager
 {
 private:
