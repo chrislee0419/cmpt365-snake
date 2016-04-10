@@ -35,8 +35,8 @@ public:
 
 	int GetScore();
 
-	void SetScore(int score);
-	void SetHighScore();
+	void ResetScore();
+	void SetHighScore(int score);
 	void IncrementScore();
 
 	void Draw();

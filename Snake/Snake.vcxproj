@@ -67,21 +67,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="objects\basic\Box.h" />
+    <ClInclude Include="objects\basic\Text.h" />
     <ClInclude Include="objects\game\Game.h" />
     <ClInclude Include="objects\game\Menu.h" />
-    <ClInclude Include="objects\menu\Box.h" />
-    <ClInclude Include="objects\menu\Text.h" />
+    <ClInclude Include="objects\GameManager.h" />
     <ClInclude Include="objects\test.h" />
     <ClInclude Include="objects\_colours.h" />
+    <ClInclude Include="objects\_macro.h" />
     <ClInclude Include="objects\_util.h" />
     <ClInclude Include="shaders\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="objects\basic\Box.cpp" />
+    <ClCompile Include="objects\basic\Text.cpp" />
     <ClCompile Include="objects\game\Game.cpp" />
     <ClCompile Include="objects\game\Menu.cpp" />
-    <ClCompile Include="objects\menu\Box.cpp" />
-    <ClCompile Include="objects\menu\Text.cpp" />
+    <ClCompile Include="objects\GameManager.cpp" />
     <ClCompile Include="objects\test.cpp" />
     <ClCompile Include="shaders\Shader.cpp" />
   </ItemGroup>

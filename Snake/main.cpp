@@ -11,10 +11,11 @@
 
 #include "objects\basic\Box.h"
 #include "objects\basic\Text.h"
-#include "objects\game\Menu.h"
+#include "objects\GameManager.h"
 
 #include "objects\test.h"
 #include "objects\_util.h"
+#include "objects\_macro.h"
 
 using namespace std;
 
@@ -22,7 +23,7 @@ using namespace std;
 bool enable_test = false;
 Test *tester_object;
 
-Menu *menu_obj;
+GameManager *manager;
 
 int window_x = 800;
 int window_y = 800;
@@ -41,8 +42,7 @@ void Initialize()
 
 	// Extra preparation
 	Text::PrepareFT();
-
-	menu_obj = new Menu();
+	manager = new GameManager();
 
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -55,7 +55,7 @@ void Cleanup()
 {
 	if (enable_test)
 		delete tester_object;
-	delete menu_obj;
+	delete manager;
 }
 
 void Display()
@@ -74,7 +74,7 @@ void Display()
 		//tester_object->BasicTestDisplay();
 	}
 
-	menu_obj->Draw();
+	manager->Draw();
 
 	glutSwapBuffers();
 }
@@ -86,6 +86,25 @@ void Keyboard(unsigned char key, int x, int y)
 	case 'q':
 		Cleanup();
 		exit(EXIT_SUCCESS);
+	}
+}
+
+void Special(int key, int x, int y)
+{
+	switch (key)
+	{
+	case GLUT_KEY_UP:
+		manager->PlayerDirection(MOVE_UP);
+		break;
+	case GLUT_KEY_DOWN:
+		manager->PlayerDirection(MOVE_DOWN);
+		break;
+	case GLUT_KEY_LEFT:
+		manager->PlayerDirection(MOVE_LEFT);
+		break;
+	case GLUT_KEY_RIGHT:
+		manager->PlayerDirection(MOVE_RIGHT);
+
 	}
 }
 
@@ -125,6 +144,7 @@ int main(int argc, char **argv) {
 	// Callback registration
 	glutDisplayFunc(Display);
 	glutKeyboardFunc(Keyboard);
+	glutSpecialFunc(Special);
 	glutReshapeFunc(Reshape);
 
 	glutMainLoop();

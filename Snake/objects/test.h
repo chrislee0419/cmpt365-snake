@@ -9,8 +9,8 @@
 #include "..\depend\freeglut\freeglut.h"
 #include "..\depend\glm\vec4.hpp"
 
-#include "..\objects\menu\Box.h"
-#include "..\objects\menu\Text.h"
+#include "..\objects\basic\Box.h"
+#include "..\objects\basic\Text.h"
 
 #include "..\shaders\Shader.h"
 #include "..\objects\_colours.h"

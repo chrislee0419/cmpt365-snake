@@ -21,7 +21,9 @@ public:
 
 	void Instructions();
 	void Reset();
-	void PlayerAction(unsigned char c);
+	void PlayerDirection(int action);
+
+	int Timer();
 
 	void Draw();
 };

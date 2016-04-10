@@ -3,9 +3,11 @@
 //	by Chris Lee - cla235
 */
 
+#include <stdio.h>
 #include "..\_colours.h"
-
 #include "Menu.h"
+
+using std::string;
 
 // Constructor
 Menu::Menu()
@@ -127,9 +129,28 @@ Menu::~Menu()
 	free(_snakebox);
 }
 
-// Rendering function
+void Menu::ResetScore()
+{
+	_score = 0;
+}
+
+void Menu::SetHighScore(int score)
+{
+	_highscore = score;
+}
+
+void Menu::IncrementScore()
+{
+	if (_highscore < ++_score)
+		SetHighScore(_score);
+}
+
+// Rendering method
 void Menu::Draw()
 {
+	_SetScoreNumber();
+	_SetHighScoreNumber();
+
 	_background->Draw(0, 600);
 	_scorebox->Draw(0, 600);
 	_scoretext->Draw(0, 600);
@@ -139,4 +160,23 @@ void Menu::Draw()
 	_highscorenumber->Draw(0, 600);
 	for (int i = 0; i < 72; i++)
 		_snakebox[i].Draw(0, 600);
+}
+
+// Helper methods
+void Menu::_SetScoreNumber()
+{
+	char score[7] = { 0 };
+	sprintf_s(score, sizeof(score), "%6d", _score % 1000000);
+
+	string text = string(score);
+	_scorenumber->SetText(text);
+}
+
+void Menu::_SetHighScoreNumber()
+{
+	char score[7] = { 0 };
+	sprintf_s(score, sizeof(score), "%6d", _highscore % 1000000);
+
+	string text = string(score);
+	_highscorenumber->SetText(text);
 }
