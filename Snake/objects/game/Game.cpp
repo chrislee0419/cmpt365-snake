@@ -46,7 +46,8 @@ Game::Game()
 // Destructor
 Game::~Game()
 {
-
+	free(_board_init);
+	free(_snake_init);
 }
 
 // Game functions
@@ -95,9 +96,23 @@ void Game::GenerateFruit()
 		y = rand() % 29;
 	}
 
-	// set as fruit and colour the fruit location
+	// set as fruit
 	board[x][y] = BOARD_FRUIT;
-	
+
+	// colour the fruit location
+	_board_init[x + y * 39].SetOuterColour(YELLOW);
+	_board_init[x + y * 39].SetInnerColour(YELLOW);
+}
+
+// Rendering method
+void Game::Draw()
+{
+	// draw board
+	for (int i = 0; i < 29 * 39; i++)
+		_board_init[i].Draw(0, 0);
+
+	// draw snake head
+	_snake_init[0].Draw(0, 0);
 }
 
 // Private helper methods
@@ -115,31 +130,22 @@ void Game::_InitBoard()
 		}
 	}
 
+	// default game board to be good
 	for (int i = 0; i < 29; i++)
 		for (int j = 0; j < 39; j++)
 			board[i][j] = BOARD_GOOD;
-
-	for (int i = 0; i < 29 * 39; i++)
-		_board_init[i].Draw(0, 0);
 }
 
 void Game::_InitStart()
 {
-	// draw the head of the snake
 	_snake_init = (Box*)malloc(sizeof(Box) * 1);
-	_snake_init[0] = Box(20, 20, 20 * head[0], 20 * head[1], RED, RED);
-	_snake_init[0].Draw(0, 0);
+	_snake_init[0] = Box(20, 20, head[0], head[1], RED, RED);
 
 	// seed the time function
 	srand(time(NULL));
 
 	// generate random fruit
 	GenerateFruit();
-}
-
-void Game::_Draw()
-{
-
 }
 
 //void Test::_CreateGameTest()

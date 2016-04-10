@@ -24,7 +24,6 @@ private:
 	Box *_board_init;
 	Box *_snake_init;
 
-	void _Draw();
 	void _Init();
 	void _InitBoard();
 	void _InitStart();
