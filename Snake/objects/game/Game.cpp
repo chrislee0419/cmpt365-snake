@@ -48,6 +48,16 @@ Game::~Game()
 }
 
 // Game functions
+void Game::Restart()
+{
+	// makes board all good
+	for (int i = 0; i < 29; i++)
+		for (int j = 0; j < 39; j++)
+			_board[i][j] = BOARD_GOOD;
+
+	_InitStart();
+}
+
 void Game::UpdateDirection(glm::ivec2 direction)
 {
 	// cannot move in reverse direction
