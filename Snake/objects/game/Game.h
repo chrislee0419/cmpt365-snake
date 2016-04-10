@@ -23,8 +23,7 @@ class Game
 private:
 	glm::ivec2 _current_direction;
 	std::queue<glm::ivec2, deque<glm::ivec2>> _snake;
-	// board[x][y] represents whether the cell (x, y) is occupied
-	int _board[39][29];
+	int _board[39][29];		// board[x][y] represents whether the cell (x, y) is occupied
 	glm::ivec2 _head;
 	Box *_board_box;
 	Box *_background;

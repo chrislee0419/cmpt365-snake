@@ -32,10 +32,6 @@ private:
 	void _DisplayTextTest();
 	bool _text_test;
 
-	//Sprite *sprite_objects;
-	//void _CreateSpriteTest();
-	//void _DispalySpriteTest();
-
 public:
 	Test();
 	~Test();

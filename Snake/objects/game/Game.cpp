@@ -33,6 +33,9 @@ using glm::ivec2;
 // Constructor
 Game::Game()
 {
+	// seed rand - only done once
+	srand(time(NULL));
+
 	_InitBoard();
 	_InitStart();
 }
@@ -47,7 +50,9 @@ Game::~Game()
 // Game functions
 void Game::UpdateDirection(glm::ivec2 direction)
 {
-	_current_direction = direction;
+	// cannot move in reverse direction
+	if ( !(-_current_direction == direction) )
+		_current_direction = direction;
 }
 
 int Game::UpdatePosition()
@@ -70,6 +75,7 @@ int Game::UpdatePosition()
 	else if (_board[new_head.x][new_head.y] == BOARD_FRUIT)
 	{
 		_UpdateSnake(new_head, true);
+		_GenerateFruit();
 		return MOVE_GROW;
 	}
 
@@ -99,10 +105,12 @@ void Game::_InitBoard()
 
 	_board_box = (Box*)malloc(sizeof(Box) * (29 * 39));
 
+	// every block is coloured like the snake body
+	// only draw if snake is on block
 	for (int i = 0; i < 29; i++)
 	{
 		for (int j = 0; j < 39; j++)
-			_board_box[i*39 + j] = Box(20, 20, 20 * j, 20 * i, BLACK, BLACK);
+			_board_box[i*39 + j] = Box(20, 20, 20 * j, 20 * i, GOLD, YELLOW);
 	}
 
 	// default game board to be good
@@ -117,9 +125,6 @@ void Game::_InitStart()
 	while (!_snake.empty())
 		_snake.pop();
 
-	// seed the time function
-	srand(time(NULL));
-
 	// snake starts at length 3
 	_head = ivec2(20, 15);
 	_snake.push(_head);
@@ -128,6 +133,10 @@ void Game::_InitStart()
 	_board[20][15] = BOARD_OCCUPIED;
 	_board[21][15] = BOARD_OCCUPIED;
 	_board[22][15] = BOARD_OCCUPIED;
+	_board_box[20 + 15 * 39].SetColour(RED, PINK);
+
+	// start moving left
+	_current_direction = ivec2(-1, 0);
 
 	// generate random fruit
 	_GenerateFruit();
@@ -153,25 +162,20 @@ void Game::_GenerateFruit()
 
 void Game::_UpdateSnake(ivec2 new_head, bool grow)
 {
-	_board[_head.x][_head.y] = BOARD_OCCUPIED;
+	// set current head to body
 	_board_box[_head.x + _head.y * 39].SetColour(GOLD, YELLOW);
-	_head = new_head;
 
+	// set new head to occupied
+	_head = new_head;
+	_board[_head.x][_head.y] = BOARD_OCCUPIED;
+	_board_box[_head.x + _head.y * 39].SetColour(RED, PINK);
+	_snake.push(_head);
+
+	// if snake did not grow, pop tail
 	if (!grow)
 	{
 		ivec2 tail = _snake.front();
 		_board[tail.x][tail.y] = BOARD_GOOD;
-		// does not need to change colour because it won't be drawn
 		_snake.pop();
 	}
 }
-
-//void Test::_CreateGameTest()
-//{
-//
-//}
-//
-//void Test::_DisplayGameTest()
-//{
-//
-//}
