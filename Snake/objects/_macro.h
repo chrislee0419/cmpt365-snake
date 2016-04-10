@@ -1,4 +1,3 @@
-
 // GameManager macros
 #define STATE_INSTRUCT 1
 #define STATE_PAUSED 2
@@ -16,3 +15,7 @@
 #define MOVE_GROW 20
 #define MOVE_HIT 30
 
+// Board macros
+#define BOARD_GOOD 90
+#define BOARD_OCCUPIED 91
+#define BOARD_FRUIT 92

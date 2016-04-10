@@ -7,28 +7,36 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <stdlib.h>
+#include <time.h>
 
-#include "..\..\depend\glew\glew.h"
-#include "..\..\depend\freeglut\freeglut.h"
-#include "..\..\shaders\Shader.h"
-#include "..\..\depend\glm\vec4.hpp"
+#include "..\..\depend\glm\vec2.hpp"
 #include "..\_colours.h"
+#include "..\basic\Box.h"
+#include "..\_macro.h"
+
 
 class Game
 {
 private:
+	glm::ivec2 _current_direction;
 	bool _ready;
+	Box *_board_init;
+	Box *_snake_init;
 
+	void _Draw();
 	void _Init();
 	void _InitBoard();
 	void _InitStart();
-	bool _ready;
 
 public:
 	Game();
 	~Game();
 
 	void Restart();
-	void Move(glm::vec2 direction);
+	void UpdateDirection(glm::ivec2 direction);
+	int UpdatePosition();
+	void GenerateFruit();
+	void Draw();
 	void Init();
 };

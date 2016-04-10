@@ -18,7 +18,6 @@
 	- player head is red
 	- player body is yellow
 
-
 */
 
 #include "Game.h"
@@ -28,15 +27,15 @@
 using namespace std;
 
 // Globals 
-
 // Window size
 float xsize = 800.0;
 float ysize = 600.0;
 
-glm::vec2 tilepos = glm::vec2(20, 15);
+// Starting position
+glm::ivec2 head = glm::ivec2(20, 15);
 
 // board[x][y] represents whether the cell (x, y) is occupied
-bool board[39][29];
+int board[39][29];
 
 // Constructor
 Game::Game()
@@ -50,45 +49,97 @@ Game::~Game()
 
 }
 
+// Game functions
 void Game::Init()
 {
 	_InitBoard();
 	_InitStart();
 }
 
-void Game::Move(glm::vec2 direction)
+int Game::UpdatePosition()
 {
+	// checks if it hits a occupied block (i.e. apart of the snake body)
+	if (board[(head[0])][(head[1])] == BOARD_OCCUPIED)
+		return MOVE_HIT;
+	
+	// checks if it has hit the left and right boundaries
+	else if ((head[0]) < 0 || (head[0]) > 40)
+		return MOVE_HIT;
+	
+	// checks if it has hit the top and bottom boundaries
+	else if ((head[1]) < 0 || (head[1]) > 30)
+		return MOVE_HIT;
 
+	// checks if it has hit a fruit
+	else if (board[(head[0])][(head[1])] == BOARD_FRUIT)
+		return MOVE_GROW;
+
+	// else the block should be ok
+	else
+		return MOVE_OK;
+}
+
+void Game::UpdateDirection(glm::ivec2 direction)
+{
+	_current_direction = direction;
+}
+
+void Game::GenerateFruit()
+{
+	int x = rand() % 39;
+	int y = rand() % 29;
+
+	while (board[x][y] == BOARD_OCCUPIED)
+	{
+		x = rand() % 39;
+		y = rand() % 29;
+	}
+
+	// set as fruit and colour the fruit location
+	board[x][y] = BOARD_FRUIT;
+	
 }
 
 // Private helper methods
 void Game::_InitBoard()
 {
-	Box *board_init = (Box*)malloc(sizeof(Box) * (29 * 39));
+	_board_init = (Box*)malloc(sizeof(Box) * (29 * 39));
 	int k = 0;
 
 	for (int i = 0; i < 29; i++)
 	{
 		for (int j = 0; j < 39; j++)
 		{
-			board_init[k] = Box(20, 20, 20 * j, 20 * i, BLACK, BLACK);
+			_board_init[k] = Box(20, 20, 20 * j, 20 * i, BLACK, BLACK);
 			k++;
 		}
 	}
 
 	for (int i = 0; i < 29; i++)
 		for (int j = 0; j < 39; j++)
-			board[i][j] = false;
+			board[i][j] = BOARD_GOOD;
 
 	for (int i = 0; i < 29 * 39; i++)
-		board_init[i].Draw(0, 0);
+		_board_init[i].Draw(0, 0);
 }
 
 void Game::_InitStart()
 {
-	Box *snake_init = (Box*)malloc(sizeof(Box) * 1);
-	snake_init[0] = Box(20, 20, 20 * tilepos[0], 20 * tilepos[1], RED, RED);
-	snake_init[0].Draw(0, 0);
+	// draw the head of the snake
+	_snake_init = (Box*)malloc(sizeof(Box) * 1);
+	_snake_init[0] = Box(20, 20, 20 * head[0], 20 * head[1], RED, RED);
+	_snake_init[0].Draw(0, 0);
+
+	// seed the time function
+	srand(time(NULL));
+
+	// generate random fruit
+	GenerateFruit();
+}
+
+void Game::_Draw()
+{
+
 }
 
 //void Test::_CreateGameTest()
