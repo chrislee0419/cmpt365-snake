@@ -18,7 +18,7 @@
 using namespace std;
 
 // GLOBAL VARIABLES
-bool enable_test = true;
+bool enable_test = false;
 Test *tester_object;
 
 int window_x = 800;
@@ -51,7 +51,9 @@ void Initialize()
 
 void Cleanup()
 {
-	delete tester_object;
+	if (enable_test)
+		delete tester_object;
+
 }
 
 void Display()

@@ -68,6 +68,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="objects\game\Game.h" />
+    <ClInclude Include="objects\game\Menu.h" />
     <ClInclude Include="objects\menu\Box.h" />
     <ClInclude Include="objects\menu\Text.h" />
     <ClInclude Include="objects\test.h" />
@@ -78,6 +79,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="objects\game\Game.cpp" />
+    <ClCompile Include="objects\game\Menu.cpp" />
     <ClCompile Include="objects\menu\Box.cpp" />
     <ClCompile Include="objects\menu\Text.cpp" />
     <ClCompile Include="objects\test.cpp" />

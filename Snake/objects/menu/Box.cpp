@@ -15,26 +15,40 @@ Shader Box::_shader;
 // Constructors
 Box::Box()
 {
-	_Init(40, 20, 0, 0, WHITE, BLACK);
+	_Init(40, 20, 0, 0, 5, WHITE, BLACK);
 }
 
 Box::Box(int xsize, int ysize, int xpos, int ypos)
 {
-	_Init(xsize, ysize, xpos, ypos, WHITE, BLACK);
+	_Init(xsize, ysize, xpos, ypos, 5, WHITE, BLACK);
+	if (!_Assert())
+		throw std::invalid_argument("Box [WARNING]: constructor recieved an invalid input.");
+}
+
+Box::Box(int xsize, int ysize, int xpos, int ypos, int border)
+{
+	_Init(xsize, ysize, xpos, ypos, border, WHITE, BLACK);
 	if (!_Assert())
 		throw std::invalid_argument("Box [WARNING]: constructor recieved an invalid input.");
 }
 
 Box::Box(int xsize, int ysize, int xpos, int ypos, glm::vec4 outer_colour, glm::vec4 inner_colour)
 {
-	_Init(xsize, ysize, xpos, ypos, outer_colour, inner_colour);
+	_Init(xsize, ysize, xpos, ypos, 5, outer_colour, inner_colour);
+	if (!_Assert())
+		throw std::invalid_argument("Box [WARNING]: constructor recieved an invalid input.");
+}
+
+Box::Box(int xsize, int ysize, int xpos, int ypos, int border, glm::vec4 outer_colour, glm::vec4 inner_colour)
+{
+	_Init(xsize, ysize, xpos, ypos, border, outer_colour, inner_colour);
 	if (!_Assert())
 		throw std::invalid_argument("Box [WARNING]: constructor recieved an invalid input.");
 }
 
 Box::Box(const Box &old_box)
 {
-	_Init(old_box._xsize, old_box._ysize, old_box._xpos, old_box._ypos,
+	_Init(old_box._xsize, old_box._ysize, old_box._xpos, old_box._ypos, old_box._border,
 		old_box._outer_colour, old_box._inner_colour);
 	if (!_Assert())
 		throw std::invalid_argument("Box [WARNING]: constructor recieved an invalid input.");
@@ -72,6 +86,11 @@ int Box::GetYPosition()
 	return _ypos;
 }
 
+int Box::GetBorderSize()
+{
+	return _border;
+}
+
 // Setter methods
 void Box::SetXSize(int x)
 {
@@ -94,6 +113,12 @@ void Box::SetXPosition(int x)
 void Box::SetYPosition(int y)
 {
 	_ypos = y;
+	_Assert();
+}
+
+void Box::SetBorderSize(int size)
+{
+	_border = size;
 	_Assert();
 }
 
@@ -158,7 +183,7 @@ void Box::Draw(int x_translate, int y_translate)
 }
 
 // Private helper methods
-void Box::_Init(int xsize, int ysize, int xpos, int ypos, glm::vec4 outer_colour, glm::vec4 inner_colour)
+void Box::_Init(int xsize, int ysize, int xpos, int ypos, int border, glm::vec4 outer_colour, glm::vec4 inner_colour)
 {
 	vao = 0;
 	position_vbo = 0;
@@ -166,6 +191,7 @@ void Box::_Init(int xsize, int ysize, int xpos, int ypos, glm::vec4 outer_colour
 	_ready = false;
 	_SetValues(xsize, ysize, xpos, ypos);
 	_SetColours(outer_colour, inner_colour);
+	SetBorderSize(border);
 }
 
 bool Box::_Assert()
@@ -178,6 +204,11 @@ bool Box::_Assert()
 	if (_ysize < 11)
 	{
 		printf("Box [WARNING]: _Assert found invalid _ysize (%d).\n", _ysize);
+		return false;
+	}
+	if (_border >= _ysize / 2 || _border >= _xsize / 2)
+	{
+		printf("Box [WARNING]: _Assert found invalid _border (%d).\n", _border);
 		return false;
 	}
 
@@ -220,31 +251,31 @@ glm::vec4* Box::_CreateVerticesArray()
 	// Bottom border
 	vertices[6] = glm::vec4(_xpos, _ypos, 0.0, 1.0);
 	vertices[7] = glm::vec4(_xpos + _xsize, _ypos, 0.0, 1.0);
-	vertices[8] = glm::vec4(_xpos + _xsize, _ypos + 5, 0.0, 1.0);
+	vertices[8] = glm::vec4(_xpos + _xsize, _ypos + _border, 0.0, 1.0);
 	vertices[9] = glm::vec4(_xpos, _ypos, 0.0, 1.0);
-	vertices[10] = glm::vec4(_xpos + _xsize, _ypos + 5, 0.0, 1.0);
-	vertices[11] = glm::vec4(_xpos, _ypos + 5, 0.0, 1.0);
+	vertices[10] = glm::vec4(_xpos + _xsize, _ypos + _border, 0.0, 1.0);
+	vertices[11] = glm::vec4(_xpos, _ypos + _border, 0.0, 1.0);
 	// Top border
-	vertices[12] = glm::vec4(_xpos, _ypos + _ysize - 5, 0.0, 1.0);
-	vertices[13] = glm::vec4(_xpos + _xsize, _ypos + _ysize - 5, 0.0, 1.0);
+	vertices[12] = glm::vec4(_xpos, _ypos + _ysize - _border, 0.0, 1.0);
+	vertices[13] = glm::vec4(_xpos + _xsize, _ypos + _ysize - _border, 0.0, 1.0);
 	vertices[14] = glm::vec4(_xpos + _xsize, _ypos + _ysize, 0.0, 1.0);
-	vertices[15] = glm::vec4(_xpos, _ypos + _ysize - 5, 0.0, 1.0);
+	vertices[15] = glm::vec4(_xpos, _ypos + _ysize - _border, 0.0, 1.0);
 	vertices[16] = glm::vec4(_xpos + _xsize, _ypos + _ysize, 0.0, 1.0);
 	vertices[17] = glm::vec4(_xpos, _ypos + _ysize, 0.0, 1.0);
 	// Left border
 	vertices[18] = glm::vec4(_xpos, _ypos, 0.0, 1.0);
-	vertices[19] = glm::vec4(_xpos + 5, _ypos, 0.0, 1.0);
-	vertices[20] = glm::vec4(_xpos + 5, _ypos + _ysize, 0.0, 1.0);
+	vertices[19] = glm::vec4(_xpos + _border, _ypos, 0.0, 1.0);
+	vertices[20] = glm::vec4(_xpos + _border, _ypos + _ysize, 0.0, 1.0);
 	vertices[21] = glm::vec4(_xpos, _ypos, 0.0, 1.0);
-	vertices[22] = glm::vec4(_xpos + 5, _ypos + _ysize, 0.0, 1.0);
+	vertices[22] = glm::vec4(_xpos + _border, _ypos + _ysize, 0.0, 1.0);
 	vertices[23] = glm::vec4(_xpos, _ypos + _ysize, 0.0, 1.0);
 	// Right border
-	vertices[24] = glm::vec4(_xpos + _xsize - 5, _ypos, 0.0, 1.0);
+	vertices[24] = glm::vec4(_xpos + _xsize - _border, _ypos, 0.0, 1.0);
 	vertices[25] = glm::vec4(_xpos + _xsize, _ypos, 0.0, 1.0);
 	vertices[26] = glm::vec4(_xpos + _xsize, _ypos + _ysize, 0.0, 1.0);
-	vertices[27] = glm::vec4(_xpos + _xsize - 5, _ypos, 0.0, 1.0);
+	vertices[27] = glm::vec4(_xpos + _xsize - _border, _ypos, 0.0, 1.0);
 	vertices[28] = glm::vec4(_xpos + _xsize, _ypos + _ysize, 0.0, 1.0);
-	vertices[29] = glm::vec4(_xpos + _xsize - 5, _ypos + _ysize, 0.0, 1.0);
+	vertices[29] = glm::vec4(_xpos + _xsize - _border, _ypos + _ysize, 0.0, 1.0);
 
 	return vertices;
 }
