@@ -11,6 +11,7 @@
 
 #include "objects\menu\Box.h"
 #include "objects\menu\Text.h"
+#include "objects\game\Menu.h"
 
 #include "objects\test.h"
 #include "objects\_util.h"
@@ -20,6 +21,8 @@ using namespace std;
 // GLOBAL VARIABLES
 bool enable_test = false;
 Test *tester_object;
+
+Menu *menu_obj;
 
 int window_x = 800;
 int window_y = 800;
@@ -32,15 +35,14 @@ void Initialize()
 	default_shader = Shader("shaders\\vshader.glsl", "shaders\\fshader.glsl");
 	texture_shader = Shader("shaders\\vtexshader.glsl", "shaders\\ftexshader.glsl");
 
-	// Set up window size uniforms
-	GLuint program = default_shader.GetProgram();
-
 	// Provide each class with their respective shader programs
 	Box::SetShader(default_shader);
 	Text::SetShader(texture_shader);
 
 	// Extra preparation
 	Text::PrepareFT();
+
+	menu_obj = new Menu();
 
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -53,7 +55,7 @@ void Cleanup()
 {
 	if (enable_test)
 		delete tester_object;
-
+	delete menu_obj;
 }
 
 void Display()
@@ -71,6 +73,8 @@ void Display()
 		tester_object->DisplayTest();
 		//tester_object->BasicTestDisplay();
 	}
+
+	menu_obj->Draw();
 
 	glutSwapBuffers();
 }
