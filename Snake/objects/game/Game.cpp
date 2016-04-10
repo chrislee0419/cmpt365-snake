@@ -25,83 +25,60 @@
 #include "..\_util.h"
 
 using namespace std;
+using glm::ivec2;
 
 // Globals 
-// Window size
-float xsize = 800.0;
-float ysize = 600.0;
-
 // Starting position
-glm::ivec2 head = glm::ivec2(20, 15);
-
-// board[x][y] represents whether the cell (x, y) is occupied
-int board[39][29];
 
 // Constructor
 Game::Game()
-{
-	Init();
-}
-
-// Destructor
-Game::~Game()
-{
-	free(_board_init);
-	free(_snake_init);
-}
-
-// Game functions
-void Game::Init()
 {
 	_InitBoard();
 	_InitStart();
 }
 
-int Game::UpdatePosition()
+// Destructor
+Game::~Game()
 {
-	// checks if it hits a occupied block (i.e. apart of the snake body)
-	if (board[(head[0])][(head[1])] == BOARD_OCCUPIED)
-		return MOVE_HIT;
-	
-	// checks if it has hit the left and right boundaries
-	else if ((head[0]) < 0 || (head[0]) > 40)
-		return MOVE_HIT;
-	
-	// checks if it has hit the top and bottom boundaries
-	else if ((head[1]) < 0 || (head[1]) > 30)
-		return MOVE_HIT;
-
-	// checks if it has hit a fruit
-	else if (board[(head[0])][(head[1])] == BOARD_FRUIT)
-		return MOVE_GROW;
-
-	// else the block should be ok
-	else
-		return MOVE_OK;
+	delete _background;
+	free(_board_box);
 }
 
+// Game functions
 void Game::UpdateDirection(glm::ivec2 direction)
 {
 	_current_direction = direction;
 }
 
-void Game::GenerateFruit()
+int Game::UpdatePosition()
 {
-	int x = rand() % 39;
-	int y = rand() % 29;
+	ivec2 new_head = _head + _current_direction;
 
-	while (board[x][y] == BOARD_OCCUPIED)
+	// checks if it hits a occupied block (i.e. apart of the snake body)
+	if (_board[new_head.x][new_head.y] == BOARD_OCCUPIED)
+		return MOVE_HIT;
+
+	// checks if it has hit the left and right boundaries
+	else if (new_head.x < 0 || new_head.x > 39)
+		return MOVE_HIT;
+
+	// checks if it has hit the top and bottom boundaries
+	else if (new_head.y < 0 || new_head.y > 29)
+		return MOVE_HIT;
+
+	// checks if it has hit a fruit
+	else if (_board[new_head.x][new_head.y] == BOARD_FRUIT)
 	{
-		x = rand() % 39;
-		y = rand() % 29;
+		_UpdateSnake(new_head, true);
+		return MOVE_GROW;
 	}
 
-	// set as fruit
-	board[x][y] = BOARD_FRUIT;
-
-	// colour the fruit location
-	_board_init[x + y * 39].SetOuterColour(YELLOW);
-	_board_init[x + y * 39].SetInnerColour(YELLOW);
+	// else the block should be ok
+	else
+	{
+		_UpdateSnake(new_head, false);
+		return MOVE_OK;
+	}
 }
 
 // Rendering method
@@ -109,43 +86,84 @@ void Game::Draw()
 {
 	// draw board
 	for (int i = 0; i < 29 * 39; i++)
-		_board_init[i].Draw(0, 0);
-
-	// draw snake head
-	_snake_init[0].Draw(0, 0);
+	{
+		if (_board[i % 39][i / 39] != BOARD_GOOD)
+			_board_box[i].Draw(0, 0);
+	}
 }
 
 // Private helper methods
 void Game::_InitBoard()
 {
-	_board_init = (Box*)malloc(sizeof(Box) * (29 * 39));
-	int k = 0;
+	_background = new Box(800, 600, 0, 0, 10, DARKGREY, BLACK);
+
+	_board_box = (Box*)malloc(sizeof(Box) * (29 * 39));
 
 	for (int i = 0; i < 29; i++)
 	{
 		for (int j = 0; j < 39; j++)
-		{
-			_board_init[k] = Box(20, 20, 20 * j, 20 * i, BLACK, BLACK);
-			k++;
-		}
+			_board_box[i*39 + j] = Box(20, 20, 20 * j, 20 * i, BLACK, BLACK);
 	}
 
 	// default game board to be good
 	for (int i = 0; i < 29; i++)
 		for (int j = 0; j < 39; j++)
-			board[i][j] = BOARD_GOOD;
+			_board[i][j] = BOARD_GOOD;
 }
 
 void Game::_InitStart()
 {
-	_snake_init = (Box*)malloc(sizeof(Box) * 1);
-	_snake_init[0] = Box(20, 20, head[0], head[1], RED, RED);
+	// empties the snake for new game
+	while (!_snake.empty())
+		_snake.pop();
 
 	// seed the time function
 	srand(time(NULL));
 
+	// snake starts at length 3
+	_head = ivec2(20, 15);
+	_snake.push(_head);
+	_snake.push(ivec2(21, 15));
+	_snake.push(ivec2(22, 15));
+	_board[20][15] = BOARD_OCCUPIED;
+	_board[21][15] = BOARD_OCCUPIED;
+	_board[22][15] = BOARD_OCCUPIED;
+
 	// generate random fruit
-	GenerateFruit();
+	_GenerateFruit();
+}
+
+void Game::_GenerateFruit()
+{
+	int x = rand() % 39;
+	int y = rand() % 29;
+
+	while (_board[x][y] == BOARD_OCCUPIED)
+	{
+		x = rand() % 39;
+		y = rand() % 29;
+	}
+
+	// set as fruit
+	_board[x][y] = BOARD_FRUIT;
+
+	// colour the fruit location
+	_board_box[x + y * 39].SetColour(DARKGREEN, LIGHTGREEN);
+}
+
+void Game::_UpdateSnake(ivec2 new_head, bool grow)
+{
+	_board[_head.x][_head.y] = BOARD_OCCUPIED;
+	_board_box[_head.x + _head.y * 39].SetColour(GOLD, YELLOW);
+	_head = new_head;
+
+	if (!grow)
+	{
+		ivec2 tail = _snake.front();
+		_board[tail.x][tail.y] = BOARD_GOOD;
+		// does not need to change colour because it won't be drawn
+		_snake.pop();
+	}
 }
 
 //void Test::_CreateGameTest()
