@@ -9,8 +9,8 @@
 #include "depend\glm\vec4.hpp"
 #include "depend\glm\mat4x4.hpp"
 
-#include "objects\menu\Box.h"
-#include "objects\menu\Text.h"
+#include "objects\basic\Box.h"
+#include "objects\basic\Text.h"
 #include "objects\game\Menu.h"
 
 #include "objects\test.h"

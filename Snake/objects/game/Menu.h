@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include "..\menu\Box.h"
-#include "..\menu\Text.h"
+#include "..\basic\Box.h"
+#include "..\basic\Text.h"
 
 class Menu
 {
