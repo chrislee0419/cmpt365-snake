@@ -117,7 +117,7 @@ float Text::GetWidth()
 			break;
 		}
 
-		width += ch.Size.x * _size;
+		width += (ch.Advance >> 6) * _size;
 
 		c = _text[++iter];
 	}
