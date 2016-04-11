@@ -130,7 +130,7 @@ void Game::Draw()
 // Private helper methods
 void Game::_InitBoard()
 {
-	_background = new Box(800, 600, 0, 0, 10, DARKGREY, BLACK);
+	_background = new Box(800, 600, 0, 0, 10, GOLD, BLACK);
 
 	_board_box = (Box*)malloc(sizeof(Box) * (29 * 39));
 
@@ -139,7 +139,7 @@ void Game::_InitBoard()
 	for (int i = 0; i < 29; i++)
 	{
 		for (int j = 0; j < 39; j++)
-			_board_box[i*39 + j] = Box(20, 20, 10 + 20 * j, 10 + 20 * i, GOLD, YELLOW);
+			_board_box[i*39 + j] = Box(20, 20, 10 + 20 * j, 10 + 20 * i, 4, GOLD, YELLOW);
 	}
 
 	// default game board to be good

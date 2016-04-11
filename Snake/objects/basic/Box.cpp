@@ -157,6 +157,24 @@ void Box::SetShader(Shader shader)
 	_vertex_colour = glGetAttribLocation(program, "vColour");
 }
 
+// Create GL objects before first draw
+void Box::Prepare()
+{
+	_CreateGLObjects();
+}
+
+// Destroy GL objects
+void Box::Cleanup()
+{
+	if (glIsBuffer(position_vbo) == GL_TRUE)
+		glDeleteBuffers(1, &position_vbo);
+	if (glIsBuffer(colour_vbo) == GL_TRUE)
+		glDeleteBuffers(1, &colour_vbo);
+	if (glIsVertexArray(vao) == GL_TRUE)
+		glDeleteVertexArrays(1, &vao);
+	_ready = false;
+}
+
 // Rendering method
 void Box::Draw(int x_translate, int y_translate)
 {
@@ -287,21 +305,16 @@ void Box::_CreateGLObjects()
 	if ( !glIsBuffer(position_vbo) )
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, position_vbo);
-		glm::vec4 *vertices = _CreateVerticesArray();
-		glBufferData(GL_ARRAY_BUFFER, 30 * sizeof(glm::vec4), vertices, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, 30 * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
 		glVertexAttribPointer(_vertex_position, 4, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(_vertex_position);
-		delete[] vertices;
 	}
 
 	// Store vertex colours in buffer
 	if (!glIsBuffer(colour_vbo))
 	{
-		glm::vec4 colours[30];
-		for (int i = 0; i < 6; i++) colours[i] = _inner_colour;
-		for (int i = 6; i < 30; i++) colours[i] = _outer_colour;
 		glBindBuffer(GL_ARRAY_BUFFER, colour_vbo);
-		glBufferData(GL_ARRAY_BUFFER, 30 * sizeof(glm::vec4), colours, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, 30 * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
 		glVertexAttribPointer(_vertex_colour, 4, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(_vertex_colour);
 	}
@@ -345,18 +358,6 @@ void Box::_Draw()
 	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES, 0, 30);
 	glBindVertexArray(0);
-}
-
-// Destroy GL objects
-void Box::Cleanup()
-{
-	if (glIsBuffer(position_vbo) == GL_TRUE)
-		glDeleteBuffers(1, &position_vbo);
-	if (glIsBuffer(colour_vbo) == GL_TRUE)
-		glDeleteBuffers(1, &colour_vbo);
-	if (glIsVertexArray(vao) == GL_TRUE)
-		glDeleteVertexArrays(1, &vao);
-	_ready = false;
 }
 
 // Testing methods

@@ -179,6 +179,23 @@ void Text::SetShader(Shader shader)
 	_shader.UseShader();
 }
 
+// Creates FreeType fonts and GL objects
+void Text::Prepare()
+{
+	_PrepareFT();
+	_CreateGLObjects();
+}
+
+// Destroy GL objects
+void Text::Cleanup()
+{
+	if (glIsBuffer(_vbo) == GL_TRUE)
+		glDeleteBuffers(1, &_vbo);
+	if (glIsVertexArray(_vao) == GL_TRUE)
+		glDeleteVertexArrays(1, &_vao);
+	_ready = false;
+}
+
 // Rendering method
 void Text::Draw(int x_translate, int y_translate)
 {
@@ -281,7 +298,7 @@ void Text::_CreateGLObjects()
 }
 
 // Prepare Freetype library and faces
-void Text::PrepareFT()
+void Text::_PrepareFT()
 {
 	FT_Library ft;
 	FT_Face roboto_face, ubuntu_face;
@@ -355,16 +372,6 @@ void Text::PrepareFT()
 	FT_Done_Face(roboto_face);
 	FT_Done_Face(ubuntu_face);
 	FT_Done_FreeType(ft);
-}
-
-// Destroy GL objects
-void Text::Cleanup()
-{
-	if (glIsBuffer(_vbo) == GL_TRUE)
-		glDeleteBuffers(1, &_vbo);
-	if (glIsVertexArray(_vao) == GL_TRUE)
-		glDeleteVertexArrays(1, &_vao);
-	_ready = false;
 }
 
 // Testing methods

@@ -26,9 +26,9 @@ Menu::Menu()
 	_snakebox = (Box*)malloc(sizeof(Box)* 72);
 
 	// initialization
-	*_background = Box(800, 200, 0, 0, 10, DARKGREY, BLACK);
-	*_scorebox = Box(300, 105, 0, 95, 10, DARKGREY, BLACK);
-	*_highscorebox = Box(300, 105, 0, 0, 10, DARKGREY, BLACK);
+	*_background = Box(800, 200, 0, 0, 10, RED, BLACK);
+	*_scorebox = Box(300, 105, 0, 95, 10, RED, BLACK);
+	*_highscorebox = Box(300, 105, 0, 0, 10, RED, BLACK);
 	*_scoretext = Text(0, 2.0f, "Score:", 20, 155, RED);
 	*_scorenumber = Text(0, 2.2f, "000000", 165, 115, WHITE);
 	*_highscoretext = Text(0, 2.0f, "High Score:", 20, 60, RED);

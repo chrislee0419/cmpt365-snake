@@ -42,11 +42,11 @@ void Initialize()
 	Text::SetShader(texture_shader);
 
 	// Extra preparation
-	Text::PrepareFT();
+	Box::Prepare();
+	Text::Prepare();
 
 	// GameManager preparation
 	manager = new GameManager();
-	glutPostRedisplay();
 
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0.0, 0.0, 0.0, 1.0);

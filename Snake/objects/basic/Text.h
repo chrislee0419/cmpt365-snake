@@ -45,7 +45,8 @@ private:
 
 	void _Init(int font, float size, std::string text, int xpos, int ypos, glm::vec4 colour);
 	bool _Assert();
-	void _CreateGLObjects();
+	static void _CreateGLObjects();
+	static void _PrepareFT();
 
 public:
 	Text();
@@ -67,7 +68,7 @@ public:
 	void SetYPosition(int ypos);
 	void SetPosition(int xpos, int ypos);
 	static void SetShader(const Shader shader);
-	static void PrepareFT();
+	static void Prepare();
 	static void Cleanup();
 
 	void Draw(int x_translate, int y_translate);

@@ -26,10 +26,11 @@ private:
 	void _SetValues(int xsize, int ysize, int xpos, int ypos);
 	void _SetColours(glm::vec4 outer_colour, glm::vec4 inner_colour);
 	glm::vec4* _CreateVerticesArray();
-	void _CreateGLObjects();
 	void _PushVerticesToBuffer();
 	void _PushColoursToBuffer();
 	void _Draw();
+
+	static void _CreateGLObjects();
 
 public:
 	Box();
@@ -56,6 +57,7 @@ public:
 	void SetOuterColour(glm::vec4 colour);
 	void SetInnerColour(glm::vec4 colour);
 	static void SetShader(Shader shader);
+	static void Prepare();
 	static void Cleanup();
 
 	void Draw(int x_translate, int y_translate);
