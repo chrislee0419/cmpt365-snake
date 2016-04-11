@@ -22,6 +22,7 @@ using namespace std;
 // GLOBAL VARIABLES
 bool enable_test = false;
 Test *tester_object;
+bool reset_pause = false;
 
 GameManager *manager;
 
@@ -83,6 +84,12 @@ void Display()
 
 void Timer(int value)
 {
+	if (reset_pause)
+	{
+		reset_pause = false;
+		return;
+	}
+
 	int time = manager->Timer();
 	if (time > 0)
 		glutTimerFunc(time, Timer, 0);
@@ -100,6 +107,7 @@ void Keyboard(unsigned char key, int x, int y)
 		exit(EXIT_SUCCESS);
 	case 'r':
 		time = manager->Reset();
+		reset_pause = true;
 		break;
 	case 'p':
 		time = manager->Pause();
