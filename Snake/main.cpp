@@ -79,6 +79,14 @@ void Display()
 	glutSwapBuffers();
 }
 
+void Timer(int value)
+{
+	int time = manager->Timer();
+	if (time > 0)
+		glutTimerFunc(time, Timer, 0);
+	glutPostRedisplay();
+}
+
 void Keyboard(unsigned char key, int x, int y)
 {
 	int time = 0;
@@ -100,6 +108,7 @@ void Keyboard(unsigned char key, int x, int y)
 
 	if (time > 0)
 		glutTimerFunc(time, Timer, 0);
+	glutPostRedisplay();
 }
 
 void Special(int key, int x, int y)
@@ -126,12 +135,6 @@ void Reshape(GLsizei w, GLsizei h)
 	window_x = w;
 	window_y = h;
 	glViewport(0, 0, w, h);
-}
-
-void Timer(int value)
-{
-	int time = manager->Timer();
-	glutTimerFunc(time, Timer, 0);
 }
 
 int main(int argc, char **argv) {

@@ -3,8 +3,8 @@
 #define STATE_PAUSED 2
 #define STATE_GAMEOVER 3
 #define STATE_PLAY 10
-#define DEFAULT_SPEED 200
-#define MAX_SPEED 50
+#define DEFAULT_SPEED 400
+#define MAX_SPEED 150
 
 // AudioManager macros
 #define SOUND_ACTION 1

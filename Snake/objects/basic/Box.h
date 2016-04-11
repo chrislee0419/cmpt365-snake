@@ -15,11 +15,11 @@ class Box
 private:
 	int _xsize, _ysize, _xpos, _ypos, _border;
 	glm::vec4 _outer_colour, _inner_colour;
-	GLuint vao;
-	GLuint position_vbo, colour_vbo;
+	static GLuint vao;
+	static GLuint position_vbo, colour_vbo;
+	static bool _ready;
 	static Shader _shader;
 	static GLuint _vertex_position, _vertex_colour;
-	bool _ready;
 
 	void _Init(int xsize, int ysize, int xpos, int ypos, int border, glm::vec4 outer_colour, glm::vec4 inner_colour);
 	bool _Assert();

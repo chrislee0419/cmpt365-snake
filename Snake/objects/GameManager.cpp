@@ -15,7 +15,7 @@ GameManager::GameManager()
 	_game = new Game();
 	_audio = new AudioManager();
 	_game_state = STATE_INSTRUCT;
-	_prev_game_state = STATE_GAMEOVER;
+	_prev_game_state = STATE_PLAY;
 	_game_speed = DEFAULT_SPEED;
 }
 
@@ -66,7 +66,6 @@ int GameManager::Pause()
 	{
 		_audio->PlaySound(SOUND_ACTION);
 		_audio->PlayMusic(MUSIC_PAUSE);
-		_prev_game_state = STATE_PAUSED;
 		_game_state = STATE_PAUSED;
 		return 0;
 	}
@@ -74,7 +73,6 @@ int GameManager::Pause()
 	{
 		_audio->PlaySound(SOUND_ACTION);
 		_audio->PlayMusic(MUSIC_PLAY);
-		_prev_game_state = STATE_PLAY;
 		_game_state = STATE_PLAY;
 		return _game_speed;
 	}
@@ -87,6 +85,7 @@ int GameManager::Pause()
 		return Instructions();
 	}
 
+	return 0;
 }
 
 int GameManager::Reset()
@@ -134,7 +133,7 @@ int GameManager::Timer()
 		else if (val == MOVE_GROW)
 		{
 			if (_game_speed > MAX_SPEED)
-				_game_speed -= 5;
+				_game_speed -= 25;
 			_audio->PlaySound(SOUND_EAT);
 			_top_menu->IncrementScore();
 			return _game_speed;
@@ -155,7 +154,11 @@ int GameManager::Timer()
 void GameManager::Draw()
 {
 	_top_menu->Draw();
-	//_game->Draw();
+	_game->Draw();
+	if (_game_state == STATE_INSTRUCT)
+	{
+		// draw instructions box and text
+	}
 }
 
 // Helper methods

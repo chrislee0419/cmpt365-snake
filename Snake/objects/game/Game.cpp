@@ -34,7 +34,7 @@ using glm::ivec2;
 Game::Game()
 {
 	// seed rand - only done once
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	_InitBoard();
 	_InitStart();
@@ -137,9 +137,9 @@ void Game::_InitStart()
 
 	// snake starts at length 3
 	_head = ivec2(20, 15);
-	_snake.push(_head);
-	_snake.push(ivec2(21, 15));
 	_snake.push(ivec2(22, 15));
+	_snake.push(ivec2(21, 15));
+	_snake.push(_head);
 	_board[20][15] = BOARD_OCCUPIED;
 	_board[21][15] = BOARD_OCCUPIED;
 	_board[22][15] = BOARD_OCCUPIED;
