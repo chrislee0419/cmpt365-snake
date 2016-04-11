@@ -134,15 +134,15 @@ void Menu::ResetScore()
 	_score = 0;
 }
 
-void Menu::SetHighScore(int score)
+void Menu::ResetHighScore()
 {
-	_highscore = score;
+	_highscore = 0;
 }
 
 void Menu::IncrementScore()
 {
 	if (_highscore < ++_score)
-		SetHighScore(_score);
+		_SetHighScore();
 }
 
 // Rendering method
@@ -179,4 +179,10 @@ void Menu::_SetHighScoreNumber()
 
 	string text = string(score);
 	_highscorenumber->SetText(text);
+}
+
+void Menu::_SetHighScore()
+{
+	if (_score > _highscore)
+		_highscore = _score;
 }

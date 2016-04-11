@@ -10,7 +10,7 @@
 class AudioManager
 {
 private:
-	sf::SoundBuffer _eat, _lose, _move1, _move2;
+	sf::SoundBuffer _action, _eat, _lose, _move1, _move2;
 	sf::Music _game_music, _pause_music;
 	bool _move_state;
 
@@ -18,6 +18,7 @@ public:
 	AudioManager();
 	~AudioManager();
 
+	void ResetMoveSound();
 	void PlaySound(int sound_code);
 	void PlayMusic(int music_code);
 	void StopMusic();

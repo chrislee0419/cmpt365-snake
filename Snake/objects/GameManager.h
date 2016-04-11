@@ -7,20 +7,32 @@
 
 #include "game\Menu.h"
 #include "game\Game.h"
+#include "game\AudioManager.h"
+#include "basic\Box.h"
+#include "basic\Text.h"
 
 class GameManager
 {
 private:
 	int _game_state;
+	int _prev_game_state;
+	int _game_speed;
 	Menu *_top_menu;
 	Game *_game;
+	AudioManager *_audio;
+
+	Box *_instruction_box;
+	Text *_instruction_text;
+
+	void _RestartGame();
 
 public:
 	GameManager();
 	~GameManager();
 
-	void Instructions();
-	void Reset();
+	int Instructions();
+	int Pause();
+	int Reset();
 	void PlayerDirection(int action);
 
 	int Timer();

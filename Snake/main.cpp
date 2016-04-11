@@ -81,12 +81,25 @@ void Display()
 
 void Keyboard(unsigned char key, int x, int y)
 {
+	int time = 0;
+
 	switch (key)
 	{
 	case 'q':
 		Cleanup();
 		exit(EXIT_SUCCESS);
+	case 'r':
+		time = manager->Reset();
+		break;
+	case 'p':
+		time = manager->Pause();
+		break;
+	case 'i':
+		time = manager->Instructions();
 	}
+
+	if (time > 0)
+		glutTimerFunc(time, Timer, 0);
 }
 
 void Special(int key, int x, int y)
@@ -113,6 +126,12 @@ void Reshape(GLsizei w, GLsizei h)
 	window_x = w;
 	window_y = h;
 	glViewport(0, 0, w, h);
+}
+
+void Timer(int value)
+{
+	int time = manager->Timer();
+	glutTimerFunc(time, Timer, 0);
 }
 
 int main(int argc, char **argv) {

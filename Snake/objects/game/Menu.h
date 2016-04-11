@@ -28,15 +28,14 @@ private:
 
 	void _SetScoreNumber();
 	void _SetHighScoreNumber();
+	void _SetHighScore();
 
 public:
 	Menu();
 	~Menu();
 
-	int GetScore();
-
 	void ResetScore();
-	void SetHighScore(int score);
+	void ResetHighScore();
 	void IncrementScore();
 
 	void Draw();

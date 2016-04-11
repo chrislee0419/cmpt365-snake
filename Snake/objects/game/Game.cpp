@@ -69,16 +69,16 @@ int Game::UpdatePosition()
 {
 	ivec2 new_head = _head + _current_direction;
 
-	// checks if it hits a occupied block (i.e. apart of the snake body)
-	if (_board[new_head.x][new_head.y] == BOARD_OCCUPIED)
-		return MOVE_HIT;
-
 	// checks if it has hit the left and right boundaries
-	else if (new_head.x < 0 || new_head.x > 39)
+	if (new_head.x < 0 || new_head.x > 39)
 		return MOVE_HIT;
 
-	// checks if it has hit the top and bottom boundaries
+		// checks if it has hit the top and bottom boundaries
 	else if (new_head.y < 0 || new_head.y > 29)
+		return MOVE_HIT;
+
+	// checks if it hits a occupied block (i.e. apart of the snake body)
+	else if (_board[new_head.x][new_head.y] == BOARD_OCCUPIED)
 		return MOVE_HIT;
 
 	// checks if it has hit a fruit
