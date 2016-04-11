@@ -31,7 +31,7 @@ InstructionsMenu::InstructionsMenu()
 	_text[7] = Text(UBUNTU, 1.4f, "\"r\"\t          -   resets the game", 40, 450, BLACK);
 	_text[8] = Text(UBUNTU, 1.4f, "\"q\"\t          -   exits the game", 40, 425, BLACK);
 	_text[9] = Text(UBUNTU, 1.4f, "\"(arrow key)\"  -   moves the player character (snake)", 40, 400, BLACK);
-	_text[10] = Text(ROBOTO, 1.8f, "- BLOCK TYPES -", 35, 245, BLACK);
+	_text[10] = Text(ROBOTO, 1.8f, "- BLOCK TYPES -", 35, 195, BLACK);
 
 	// center header text
 	int width = (int)_text[3].GetWidth();
