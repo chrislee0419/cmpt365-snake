@@ -101,21 +101,24 @@ void GameManager::PlayerDirection(int direction)
 	if (_game_state != STATE_PLAY)
 		return;
 
-	_audio->PlaySound(SOUND_ACTION);
+	bool sound = false;
 	switch (direction)
 	{
 	case MOVE_UP:
-		_game->UpdateDirection(ivec2(0, 1));
+		sound = _game->UpdateDirection(ivec2(0, 1));
 		break;
 	case MOVE_DOWN:
-		_game->UpdateDirection(ivec2(0, -1));
+		sound = _game->UpdateDirection(ivec2(0, -1));
 		break;
 	case MOVE_LEFT:
-		_game->UpdateDirection(ivec2(-1, 0));
+		sound = _game->UpdateDirection(ivec2(-1, 0));
 		break;
 	case MOVE_RIGHT:
-		_game->UpdateDirection(ivec2(1, 0));
+		sound = _game->UpdateDirection(ivec2(1, 0));
 	}
+
+	if (sound)
+		_audio->PlaySound(SOUND_ACTION);
 }
 
 // Timer method
@@ -133,7 +136,7 @@ int GameManager::Timer()
 		else if (val == MOVE_GROW)
 		{
 			if (_game_speed > MAX_SPEED)
-				_game_speed -= 25;
+				_game_speed -= 10;
 			_audio->PlaySound(SOUND_EAT);
 			_top_menu->IncrementScore();
 			return _game_speed;

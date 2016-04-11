@@ -58,16 +58,21 @@ void Game::Restart()
 	_InitStart();
 }
 
-void Game::UpdateDirection(glm::ivec2 direction)
+bool Game::UpdateDirection(glm::ivec2 direction)
 {
 	// cannot move in reverse direction
-	if ( !(-_current_direction == direction) )
+	if ( !(_prev_direction == direction) && _current_direction != direction )
+	{
 		_current_direction = direction;
+		return true;
+	}
+	return false;
 }
 
 int Game::UpdatePosition()
 {
 	ivec2 new_head = _head + _current_direction;
+	_prev_direction = -_current_direction;
 
 	// checks if it has hit the left and right boundaries
 	if (new_head.x < 0 || new_head.x > 38)
@@ -86,7 +91,16 @@ int Game::UpdatePosition()
 	{
 		_UpdateSnake(new_head, true);
 		_GenerateFruit();
+		_grow = true;
 		return MOVE_GROW;
+	}
+
+	// second grow phase
+	else if (_grow)
+	{
+		_UpdateSnake(new_head, true);
+		_grow = false;
+		return MOVE_OK;
 	}
 
 	// else the block should be ok
@@ -138,17 +152,23 @@ void Game::_InitStart()
 		_snake.pop();
 
 	// snake starts at length 3
+	_grow = false;
 	_head = ivec2(20, 15);
+	_snake.push(ivec2(24, 15));
+	_snake.push(ivec2(23, 15));
 	_snake.push(ivec2(22, 15));
 	_snake.push(ivec2(21, 15));
 	_snake.push(_head);
 	_board[20][15] = BOARD_OCCUPIED;
 	_board[21][15] = BOARD_OCCUPIED;
 	_board[22][15] = BOARD_OCCUPIED;
+	_board[23][15] = BOARD_OCCUPIED;
+	_board[24][15] = BOARD_OCCUPIED;
 	_board_box[20 + 15 * 39].SetColour(RED, PINK);
 
 	// start moving left
 	_current_direction = ivec2(-1, 0);
+	_prev_direction = ivec2(1, 0);
 
 	// generate random fruit
 	_GenerateFruit();

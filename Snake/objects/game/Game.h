@@ -22,11 +22,13 @@ class Game
 {
 private:
 	glm::ivec2 _current_direction;
+	glm::ivec2 _prev_direction;
 	std::queue<glm::ivec2, std::deque<glm::ivec2>> _snake;
 	int _board[39][29];		// board[x][y] represents whether the cell (x, y) is occupied
 	glm::ivec2 _head;
 	Box *_board_box;
 	Box *_background;
+	bool _grow;
 
 	void _InitBoard();
 	void _InitStart();
@@ -38,7 +40,7 @@ public:
 	~Game();
 
 	void Restart();
-	void UpdateDirection(glm::ivec2 direction);
+	bool UpdateDirection(glm::ivec2 direction);
 	int UpdatePosition();
 	void Draw();
 };
