@@ -32,6 +32,7 @@ public:
 	int Reset();
 	void PlayerDirection(int action);
 
+	int GetState();
 	int Timer();
 
 	void Draw();

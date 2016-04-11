@@ -124,6 +124,11 @@ void GameManager::PlayerDirection(int direction)
 		_audio->PlaySound(SOUND_ACTION);
 }
 
+int GameManager::GetState()
+{
+	return _game_state;
+}
+
 // Timer method
 int GameManager::Timer()
 {
