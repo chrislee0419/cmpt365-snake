@@ -14,6 +14,8 @@ GameManager::GameManager()
 	_top_menu = new Menu();
 	_game = new Game();
 	_audio = new AudioManager();
+	_instruct = new InstructionsMenu();
+
 	_game_state = STATE_INSTRUCT;
 	_prev_game_state = STATE_PLAY;
 	_game_speed = DEFAULT_SPEED;
@@ -25,6 +27,7 @@ GameManager::~GameManager()
 	delete _top_menu;
 	delete _game;
 	delete _audio;
+	delete _instruct;
 }
 
 // Input methods
@@ -158,10 +161,9 @@ void GameManager::Draw()
 {
 	_top_menu->Draw();
 	_game->Draw();
+
 	if (_game_state == STATE_INSTRUCT)
-	{
-		// draw instructions box and text
-	}
+		_instruct->Draw(50, 100);
 }
 
 // Helper methods

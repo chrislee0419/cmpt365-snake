@@ -71,6 +71,7 @@
     <ClInclude Include="objects\basic\Text.h" />
     <ClInclude Include="objects\game\AudioManager.h" />
     <ClInclude Include="objects\game\Game.h" />
+    <ClInclude Include="objects\game\InstructionsMenu.h" />
     <ClInclude Include="objects\game\Menu.h" />
     <ClInclude Include="objects\GameManager.h" />
     <ClInclude Include="objects\test.h" />
@@ -85,6 +86,7 @@
     <ClCompile Include="objects\basic\Text.cpp" />
     <ClCompile Include="objects\game\AudioManager.cpp" />
     <ClCompile Include="objects\game\Game.cpp" />
+    <ClCompile Include="objects\game\InstructionsMenu.cpp" />
     <ClCompile Include="objects\game\Menu.cpp" />
     <ClCompile Include="objects\GameManager.cpp" />
     <ClCompile Include="objects\test.cpp" />

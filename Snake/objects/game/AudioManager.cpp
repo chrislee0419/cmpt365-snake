@@ -50,14 +50,14 @@ void AudioManager::PlaySound(int sound_code)
 	{
 	case SOUND_ACTION:
 		_sound.setBuffer(_action);
-		_sound.setVolume(70);
+		_sound.setVolume(60);
 		break;
 	case SOUND_MOVE:
 		if (_move_state)
 			_sound.setBuffer(_move1);
 		else
 			_sound.setBuffer(_move2);
-		_sound.setVolume(30);
+		_sound.setVolume(20);
 		_move_state = !_move_state;
 		break;
 	case SOUND_EAT:
@@ -77,7 +77,8 @@ void AudioManager::PlaySound(int sound_code)
 
 void AudioManager::PlayMusic(int music_code)
 {
-	StopMusic();
+	_game_music.pause();
+	_pause_music.pause();
 
 	if (music_code == MUSIC_PLAY)
 	{

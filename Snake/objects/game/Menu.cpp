@@ -29,10 +29,10 @@ Menu::Menu()
 	*_background = Box(800, 200, 0, 0, 10, DARKGREY, BLACK);
 	*_scorebox = Box(300, 105, 0, 95, 10, DARKGREY, BLACK);
 	*_highscorebox = Box(300, 105, 0, 0, 10, DARKGREY, BLACK);
-	*_scoretext = Text(0, 1.0f, "Score:", 20, 175, RED);
-	*_scorenumber = Text(0, 1.0f, "000000", 150, 115, WHITE);
-	*_highscoretext = Text(0, 1.0f, "High Score:", 20, 75, RED);
-	*_highscorenumber = Text(0, 1.0f, "000000", 150, 20, WHITE);
+	*_scoretext = Text(0, 2.0f, "Score:", 20, 155, RED);
+	*_scorenumber = Text(0, 2.2f, "000000", 165, 115, WHITE);
+	*_highscoretext = Text(0, 2.0f, "High Score:", 20, 60, RED);
+	*_highscorenumber = Text(0, 2.2f, "000000", 165, 20, WHITE);
 
 	// initialize snake box
 	// S
@@ -166,7 +166,7 @@ void Menu::Draw()
 void Menu::_SetScoreNumber()
 {
 	char score[7] = { 0 };
-	sprintf_s(score, sizeof(score), "%6d", _score % 1000000);
+	sprintf_s(score, sizeof(score), "%06d", _score % 1000000);
 
 	string text = string(score);
 	_scorenumber->SetText(text);
@@ -175,7 +175,7 @@ void Menu::_SetScoreNumber()
 void Menu::_SetHighScoreNumber()
 {
 	char score[7] = { 0 };
-	sprintf_s(score, sizeof(score), "%6d", _highscore % 1000000);
+	sprintf_s(score, sizeof(score), "%06d", _highscore % 1000000);
 
 	string text = string(score);
 	_highscorenumber->SetText(text);

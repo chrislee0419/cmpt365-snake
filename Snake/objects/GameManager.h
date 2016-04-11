@@ -8,8 +8,7 @@
 #include "game\Menu.h"
 #include "game\Game.h"
 #include "game\AudioManager.h"
-#include "basic\Box.h"
-#include "basic\Text.h"
+#include "game\InstructionsMenu.h"
 
 class GameManager
 {
@@ -20,9 +19,7 @@ private:
 	Menu *_top_menu;
 	Game *_game;
 	AudioManager *_audio;
-
-	Box *_instruction_box;
-	Text *_instruction_text;
+	InstructionsMenu *_instruct;
 
 	void _RestartGame();
 

@@ -62,18 +62,20 @@ void Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	// Send window length and width to default shader program
+	// Send window length and width to shader programs
 	glUniform1i(default_shader.GetX(), window_x);
 	glUniform1i(default_shader.GetY(), window_y);
 	glUniform1i(texture_shader.GetX(), window_x);
 	glUniform1i(texture_shader.GetY(), window_y);
 
+	// display test objects
 	if (enable_test)
 	{
 		tester_object->DisplayTest();
 		//tester_object->BasicTestDisplay();
 	}
 
+	// Render game
 	manager->Draw();
 
 	glutSwapBuffers();
