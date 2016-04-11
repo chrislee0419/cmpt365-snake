@@ -25,6 +25,8 @@ private:
 	glm::ivec2 _prev_direction;
 	std::queue<glm::ivec2, std::deque<glm::ivec2>> _snake;
 	int _board[39][29];		// board[x][y] represents whether the cell (x, y) is occupied
+	int _numwalls;
+	int _fruitsate;
 	glm::ivec2 _head;
 	Box *_board_box;
 	Box *_background;
@@ -33,6 +35,7 @@ private:
 	void _InitBoard();
 	void _InitStart();
 	void _GenerateFruit();
+	void _GenerateWall();
 	void _UpdateSnake(glm::ivec2 new_head, bool grow);
 
 public:
