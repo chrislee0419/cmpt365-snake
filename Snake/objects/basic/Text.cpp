@@ -10,7 +10,7 @@
 #include "..\test.h"
 #include "..\_util.h"
 
-#ifdef DEBUG
+#if DEBUG
 #define UBUNTU_PATH "depend/fonts/Ubuntu.ttf"
 #define ROBOTO_PATH "depend/fonts/Roboto.ttf"
 #else
