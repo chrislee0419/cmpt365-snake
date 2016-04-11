@@ -150,9 +150,10 @@ void Special(int key, int x, int y)
 
 void Reshape(GLsizei w, GLsizei h)
 {
-	window_x = w;
+	/*window_x = w;
 	window_y = h;
-	glViewport(0, 0, w, h);
+	glViewport(0, 0, w, h);*/
+	glViewport(0, 0, window_x, window_y);
 }
 
 int main(int argc, char **argv) {
