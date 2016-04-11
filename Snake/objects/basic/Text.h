@@ -33,15 +33,15 @@ private:
 	static Shader _shader;
 	static std::map<char, Character> _ubuntu;
 	static std::map<char, Character> _roboto;
-	GLuint _vao;
-	GLuint _vbo;
+	static GLuint _vao;
+	static GLuint _vbo;
+	static bool _ready;
 	char _text[200];
 	glm::vec4 _colour;
 	int _xpos;
 	int _ypos;
 	float _size;
 	int _font;
-	bool _ready;
 
 	void _Init(int font, float size, std::string text, int xpos, int ypos, glm::vec4 colour);
 	bool _Assert();
@@ -68,6 +68,7 @@ public:
 	void SetPosition(int xpos, int ypos);
 	static void SetShader(const Shader shader);
 	static void PrepareFT();
+	static void Cleanup();
 
 	void Draw(int x_translate, int y_translate);
 

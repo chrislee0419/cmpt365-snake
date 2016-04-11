@@ -56,6 +56,7 @@ public:
 	void SetOuterColour(glm::vec4 colour);
 	void SetInnerColour(glm::vec4 colour);
 	static void SetShader(Shader shader);
+	static void Cleanup();
 
 	void Draw(int x_translate, int y_translate);
 

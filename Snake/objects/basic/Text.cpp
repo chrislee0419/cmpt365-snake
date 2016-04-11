@@ -17,6 +17,9 @@ using namespace std;
 Shader Text::_shader;
 map<char, Character> Text::_roboto;
 map<char, Character> Text::_ubuntu;
+GLuint Text::_vao;
+GLuint Text::_vbo;
+bool Text::_ready = false;
 
 // Constructors
 Text::Text()
@@ -60,13 +63,7 @@ Text::Text(const Text &copytext)
 }
 
 // Destructor
-Text::~Text()
-{
-	if (glIsBuffer(_vbo) == GL_TRUE)
-		glDeleteBuffers(1, &_vbo);
-	if (glIsVertexArray(_vao) == GL_TRUE)
-		glDeleteVertexArrays(1, &_vao);
-}
+Text::~Text() {}
 
 // Getter methods
 float Text::GetHeight()
@@ -249,7 +246,6 @@ void Text::_Init(int font, float size, string text, int xpos, int ypos, glm::vec
 	SetPosition(xpos, ypos);
 	SetText(text);
 	SetColour(colour);
-	_ready = false;
 }
 
 bool Text::_Assert()
@@ -359,6 +355,16 @@ void Text::PrepareFT()
 	FT_Done_Face(roboto_face);
 	FT_Done_Face(ubuntu_face);
 	FT_Done_FreeType(ft);
+}
+
+// Destroy GL objects
+void Text::Cleanup()
+{
+	if (glIsBuffer(_vbo) == GL_TRUE)
+		glDeleteBuffers(1, &_vbo);
+	if (glIsVertexArray(_vao) == GL_TRUE)
+		glDeleteVertexArrays(1, &_vao);
+	_ready = false;
 }
 
 // Testing methods

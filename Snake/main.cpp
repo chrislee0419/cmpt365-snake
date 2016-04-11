@@ -43,7 +43,10 @@ void Initialize()
 
 	// Extra preparation
 	Text::PrepareFT();
+
+	// GameManager preparation
 	manager = new GameManager();
+	glutPostRedisplay();
 
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -56,6 +59,10 @@ void Cleanup()
 {
 	if (enable_test)
 		delete tester_object;
+
+	Box::Cleanup();
+	Text::Cleanup();
+
 	delete manager;
 }
 

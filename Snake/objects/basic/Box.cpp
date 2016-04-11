@@ -62,15 +62,7 @@ Box::Box(const Box &old_box)
 }
 
 // Destructor
-Box::~Box()
-{
-	if ( glIsBuffer(position_vbo) == GL_TRUE )
-		glDeleteBuffers(1, &position_vbo);
-	if ( glIsBuffer(colour_vbo) == GL_TRUE )
-		glDeleteBuffers(1, &colour_vbo);
-	if (glIsVertexArray(vao) == GL_TRUE)
-		glDeleteVertexArrays(1, &vao);
-}
+Box::~Box() {}
 
 // Getter methods
 int Box::GetXSize()
@@ -353,6 +345,18 @@ void Box::_Draw()
 	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES, 0, 30);
 	glBindVertexArray(0);
+}
+
+// Destroy GL objects
+void Box::Cleanup()
+{
+	if (glIsBuffer(position_vbo) == GL_TRUE)
+		glDeleteBuffers(1, &position_vbo);
+	if (glIsBuffer(colour_vbo) == GL_TRUE)
+		glDeleteBuffers(1, &colour_vbo);
+	if (glIsVertexArray(vao) == GL_TRUE)
+		glDeleteVertexArrays(1, &vao);
+	_ready = false;
 }
 
 // Testing methods
