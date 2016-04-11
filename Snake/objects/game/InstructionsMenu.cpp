@@ -10,7 +10,7 @@
 InstructionsMenu::InstructionsMenu()
 {
 	// number of objects
-	_textcount = 11;
+	_textcount = 12;
 	_boxcount = 4;
 
 	_background = new Box(700, 600, 0, 0, 10, DARKGREY, LIGHTGREY);
@@ -22,10 +22,10 @@ InstructionsMenu::InstructionsMenu()
 	_boxes[3] = Box(40, 40, 40, 185, 5, DARKGREEN, LIGHTGREEN);
 
 	_text = (Text*)malloc(sizeof(Text)*_textcount);
-	_text[0] = Text(UBUNTU, 1.6f, "Wall - don't bump into walls!", 100, 195, BLACK);
-	_text[1] = Text(UBUNTU, 1.6f, "Snake body - don't eat yourself!", 100, 45, BLACK);
-	_text[2] = Text(UBUNTU, 1.6f, "Snake head - this is what you control.", 100, 95, BLACK);
-	_text[3] = Text(UBUNTU, 1.6f, "Fruit pellet - eat this to gain points.", 100, 145, BLACK);
+	_text[0] = Text(UBUNTU, 1.6f, "Fruit pellet - eat this to gain points.", 100, 195, BLACK);
+	_text[1] = Text(UBUNTU, 1.6f, "Snake head - this is what you control.", 100, 145, BLACK);
+	_text[2] = Text(UBUNTU, 1.6f, "Snake body - don't eat yourself!", 100, 95, BLACK);
+	_text[3] = Text(UBUNTU, 1.6f, "Wall - don't bump into walls!", 100, 45, BLACK);
 	_text[4] = Text(ROBOTO, 2.2f, "---  HELP  ---", 250, 550, BLACK);
 	_text[5] = Text(ROBOTO, 1.8f, "- CONTROLS -", 35, 525, BLACK);
 	_text[6] = Text(UBUNTU, 1.4f, "\"p\"\t          -   pauses and unpauses the game", 40, 500, BLACK);
@@ -36,8 +36,8 @@ InstructionsMenu::InstructionsMenu()
 	_text[11] = Text(ROBOTO, 1.8f, "- BLOCK TYPES -", 35, 245, BLACK);
 
 	// center header text
-	int width = (int)_text[3].GetWidth();
-	_text[3].SetXPosition((700 - width)/2);
+	int width = (int)_text[4].GetWidth();
+	_text[4].SetXPosition((700 - width)/2);
 }
 
 // Destructor
