@@ -10,7 +10,8 @@
 
 [Dd]ebug/Snake.*
 Snake/[Dd]ebug/
-[Rr]elease/
+[Rr]elease/Snake.*
+Snake/[Rr]elease/
 x64/
 build/
 [Bb]in/

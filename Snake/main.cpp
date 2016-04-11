@@ -21,7 +21,7 @@ using namespace std;
 
 // GLOBAL VARIABLES
 bool enable_test = false;
-Test *tester_object;
+Test *tester_object = NULL;
 bool reset_pause = false;
 
 GameManager *manager;

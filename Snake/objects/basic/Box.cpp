@@ -11,12 +11,12 @@
 #include "..\_util.h"
 
 // Globals
-GLuint Box::vao;
-GLuint Box::position_vbo;
-GLuint Box::colour_vbo;
-GLuint Box::_vertex_position;
-GLuint Box::_vertex_colour;
-Shader Box::_shader;
+GLuint Box::vao = 0;
+GLuint Box::position_vbo = 0;
+GLuint Box::colour_vbo = 0;
+GLuint Box::_vertex_position = 0;
+GLuint Box::_vertex_colour = 0;
+Shader Box::_shader = Shader();
 bool Box::_ready = false;
 
 // Constructors

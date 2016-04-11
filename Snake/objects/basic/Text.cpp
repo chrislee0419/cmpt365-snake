@@ -10,15 +10,22 @@
 #include "..\test.h"
 #include "..\_util.h"
 
+#ifdef DEBUG
+#define UBUNTU_PATH "depend/fonts/Ubuntu.ttf"
+#define ROBOTO_PATH "depend/fonts/Roboto.ttf"
+#else
+#define UBUNTU_PATH "fonts/Ubuntu.ttf"
+#define ROBOTO_PATH "fonts/Roboto.ttf"
+#endif
 
 using namespace std;
 
 // Globals
-Shader Text::_shader;
+Shader Text::_shader = Shader();
 map<char, Character> Text::_roboto;
 map<char, Character> Text::_ubuntu;
-GLuint Text::_vao;
-GLuint Text::_vbo;
+GLuint Text::_vao = 0;
+GLuint Text::_vbo = 0;
 bool Text::_ready = false;
 
 // Constructors
@@ -307,9 +314,9 @@ void Text::_PrepareFT()
 		throw runtime_error("Text [ERROR]: could not initialize FT_Library.");
 
 	// Prepares font faces
-	if (FT_New_Face(ft, "depend/fonts/Roboto.ttf", 0, &roboto_face))
+	if (FT_New_Face(ft, ROBOTO_PATH, 0, &roboto_face))
 		throw runtime_error("Text [ERROR]: could not load Roboto font.");
-	if (FT_New_Face(ft, "depend/fonts/Ubuntu.ttf", 0, &ubuntu_face))
+	if (FT_New_Face(ft, UBUNTU_PATH, 0, &ubuntu_face))
 		throw runtime_error("Text [ERROR]: could not load Ubuntu font.");
 
 	// Creating character map

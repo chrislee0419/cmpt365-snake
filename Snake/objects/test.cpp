@@ -6,7 +6,7 @@
 #include "test.h"
 
 // Globals
-Shader Test::_shader;
+Shader Test::_shader = Shader();
 
 // Constructor
 Test::Test()
