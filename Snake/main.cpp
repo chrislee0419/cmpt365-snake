@@ -106,8 +106,9 @@ void Keyboard(unsigned char key, int x, int y)
 		Cleanup();
 		exit(EXIT_SUCCESS);
 	case 'r':
+		if (manager->GetState() == STATE_PLAY)
+			reset_pause = true;
 		time = manager->Reset();
-		reset_pause = true;
 		break;
 	case 'p':
 		time = manager->Pause();
