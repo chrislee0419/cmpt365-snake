@@ -32,6 +32,8 @@ AudioManager::AudioManager()
 	_sound;
 	_game_music.setVolume(100);
 	_pause_music.setVolume(100);
+
+	_pitch = 1.0f;
 	_move_state = true;
 }
 
@@ -82,6 +84,7 @@ void AudioManager::PlayMusic(int music_code)
 
 	if (music_code == MUSIC_PLAY)
 	{
+		_game_music.setPitch(_pitch);
 		_game_music.play();
 		_game_music.setLoop(true);
 	}
@@ -96,4 +99,18 @@ void AudioManager::StopMusic()
 {
 	_game_music.stop();
 	_pause_music.stop();
+}
+
+void AudioManager::IncreasePitch()
+{
+	if (_pitch < 2.0f)
+	{
+		_pitch += 1.0f / 200.0f;
+		_game_music.setPitch(_pitch);
+	}
+}
+
+void AudioManager::ResetPitch()
+{
+	_game_music.setPitch(_pitch = 1.0f);
 }

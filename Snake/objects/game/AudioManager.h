@@ -14,6 +14,7 @@ private:
 	sf::Sound _sound;
 	sf::Music _game_music, _pause_music;
 	bool _move_state;
+	float _pitch;
 
 public:
 	AudioManager();
@@ -23,4 +24,6 @@ public:
 	void PlaySound(int sound_code);
 	void PlayMusic(int music_code);
 	void StopMusic();
+	void IncreasePitch();
+	void ResetPitch();
 };

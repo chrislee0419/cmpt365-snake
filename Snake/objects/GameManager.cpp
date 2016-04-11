@@ -139,8 +139,9 @@ int GameManager::Timer()
 		else if (val == MOVE_GROW)
 		{
 			if (_game_speed > MAX_SPEED)
-				_game_speed -= 10;
+				_game_speed -= 5;
 			_audio->PlaySound(SOUND_EAT);
+			_audio->IncreasePitch();
 			_top_menu->IncrementScore();
 			return _game_speed;
 		}
@@ -173,6 +174,7 @@ void GameManager::_RestartGame()
 	_game_speed = DEFAULT_SPEED;
 	_top_menu->ResetScore();
 	_audio->ResetMoveSound();
+	_audio->ResetPitch();
 	_audio->PlayMusic(MUSIC_PLAY);
 	_prev_game_state = STATE_PLAY;
 	_game_state = STATE_PLAY;
