@@ -51,8 +51,8 @@ Game::~Game()
 void Game::Restart()
 {
 	// makes board all good
-	for (int i = 0; i < 29; i++)
-		for (int j = 0; j < 39; j++)
+	for (int i = 0; i < 39; i++)
+		for (int j = 0; j < 29; j++)
 			_board[i][j] = BOARD_GOOD;
 
 	_InitStart();
@@ -70,11 +70,11 @@ int Game::UpdatePosition()
 	ivec2 new_head = _head + _current_direction;
 
 	// checks if it has hit the left and right boundaries
-	if (new_head.x < 0 || new_head.x > 39)
+	if (new_head.x < 0 || new_head.x > 38)
 		return MOVE_HIT;
 
 		// checks if it has hit the top and bottom boundaries
-	else if (new_head.y < 0 || new_head.y > 29)
+	else if (new_head.y < 0 || new_head.y > 28)
 		return MOVE_HIT;
 
 	// checks if it hits a occupied block (i.e. apart of the snake body)
@@ -100,6 +100,8 @@ int Game::UpdatePosition()
 // Rendering method
 void Game::Draw()
 {
+	_background->Draw(0, 0);
+
 	// draw board
 	for (int i = 0; i < 29 * 39; i++)
 	{
@@ -120,12 +122,12 @@ void Game::_InitBoard()
 	for (int i = 0; i < 29; i++)
 	{
 		for (int j = 0; j < 39; j++)
-			_board_box[i*39 + j] = Box(20, 20, 20 * j, 20 * i, GOLD, YELLOW);
+			_board_box[i*39 + j] = Box(20, 20, 10 + 20 * j, 10 + 20 * i, GOLD, YELLOW);
 	}
 
 	// default game board to be good
-	for (int i = 0; i < 29; i++)
-		for (int j = 0; j < 39; j++)
+	for (int i = 0; i < 39; i++)
+		for (int j = 0; j < 29; j++)
 			_board[i][j] = BOARD_GOOD;
 }
 

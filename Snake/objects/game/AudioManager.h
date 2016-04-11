@@ -11,6 +11,7 @@ class AudioManager
 {
 private:
 	sf::SoundBuffer _action, _eat, _lose, _move1, _move2;
+	sf::Sound _sound;
 	sf::Music _game_music, _pause_music;
 	bool _move_state;
 

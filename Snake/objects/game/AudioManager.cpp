@@ -29,6 +29,7 @@ AudioManager::AudioManager()
 	if (!_pause_music.openFromFile("audio/pause_music.wav"))
 		throw std::runtime_error("Audio [ERROR]: Could not open \"pause_music.wav\".");
 
+	_sound;
 	_game_music.setVolume(60);
 	_pause_music.setVolume(60);
 	_move_state = true;
@@ -45,34 +46,33 @@ void AudioManager::ResetMoveSound()
 
 void AudioManager::PlaySound(int sound_code)
 {
-	sf::Sound sound;
 	switch (sound_code)
 	{
 	case SOUND_ACTION:
-		sound.setBuffer(_action);
-		sound.setVolume(90);
+		_sound.setBuffer(_action);
+		_sound.setVolume(90);
 		break;
 	case SOUND_MOVE:
 		if (_move_state)
-			sound.setBuffer(_move1);
+			_sound.setBuffer(_move1);
 		else
-			sound.setBuffer(_move2);
-		sound.setVolume(80);
+			_sound.setBuffer(_move2);
+		_sound.setVolume(80);
 		_move_state = !_move_state;
 		break;
 	case SOUND_EAT:
-		sound.setBuffer(_eat);
-		sound.setVolume(90);
+		_sound.setBuffer(_eat);
+		_sound.setVolume(90);
 		break;
 	case SOUND_LOSE:
-		sound.setBuffer(_lose);
-		sound.setVolume(100);
+		_sound.setBuffer(_lose);
+		_sound.setVolume(100);
 		break;
 	default:
 		return;
 	}
 	
-	sound.play();
+	_sound.play();
 }
 
 void AudioManager::PlayMusic(int music_code)
