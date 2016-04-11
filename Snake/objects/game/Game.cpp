@@ -83,7 +83,7 @@ int Game::UpdatePosition()
 		return MOVE_HIT;
 
 	// checks if it hits a occupied block (i.e. apart of the snake body)
-	else if (_board[new_head.x][new_head.y] == BOARD_OCCUPIED)
+	else if (_board[new_head.x][new_head.y] == BOARD_OCCUPIED || _board[new_head.x][new_head.y] == BOARD_WALL)
 		return MOVE_HIT;
 
 	// checks if it has hit a fruit
@@ -91,6 +91,9 @@ int Game::UpdatePosition()
 	{
 		_UpdateSnake(new_head, true);
 		_GenerateFruit();
+		_fruitsate++;
+		if (_fruitsate > 5)
+			_GenerateWall();
 		_grow = true;
 		return MOVE_GROW;
 	}
@@ -152,6 +155,8 @@ void Game::_InitStart()
 		_snake.pop();
 
 	// snake starts at length 3
+	_numwalls = 0;
+	_fruitsate = 0;
 	_grow = false;
 	_head = ivec2(20, 15);
 	_snake.push(ivec2(24, 15));
@@ -179,7 +184,7 @@ void Game::_GenerateFruit()
 	int x = rand() % 39;
 	int y = rand() % 29;
 
-	while (_board[x][y] == BOARD_OCCUPIED)
+	while (_board[x][y] == BOARD_OCCUPIED || _board[x][y] == BOARD_WALL)
 	{
 		x = rand() % 39;
 		y = rand() % 29;
@@ -190,6 +195,32 @@ void Game::_GenerateFruit()
 
 	// colour the fruit location
 	_board_box[x + y * 39].SetColour(DARKGREEN, LIGHTGREEN);
+}
+
+void Game::_GenerateWall()
+{
+	int x = rand() % 39;
+	int y = rand() % 29;
+	glm::ivec2 xy = glm::ivec2(x, y);
+
+	while (_board[x][y] == BOARD_OCCUPIED || _board[x][y] == BOARD_WALL || _board[x][y] == BOARD_FRUIT)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			if (xy == _head + (i * _current_direction))
+				break;
+		}
+
+		x = rand() % 39;
+		y = rand() % 29;
+	}
+
+	// set as wall
+	if (_numwalls < 100 && _fruitsate > 5)
+		_board[x][y] = BOARD_WALL;
+
+	// colour the wall location
+	_board_box[x + y * 39].SetColour(DARKGRAY, LIGHTGRAY);
 }
 
 void Game::_UpdateSnake(ivec2 new_head, bool grow)

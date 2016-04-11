@@ -29,3 +29,4 @@
 #define BOARD_GOOD 90
 #define BOARD_OCCUPIED 91
 #define BOARD_FRUIT 92
+#define BOARD_WALL 93
